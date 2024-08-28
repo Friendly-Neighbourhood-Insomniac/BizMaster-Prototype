@@ -1,0 +1,392 @@
+<html><head><base href="https://bizmaster-simulator.edu/" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizMaster: AS/A-Level Business Studies Simulator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+
+  :root {
+    --primary-color: #1C2833;
+    --secondary-color: #F4F6F7;
+    --accent-color: #2980B9;
+    --text-color: #34495E;
+    --success-color: #27AE60;
+    --danger-color: #C0392B;
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  #stock-ticker {
+    width: 100%;
+    height: 60px;
+    overflow: hidden;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-item {
+    display: inline-block;
+    padding: 0 20px;
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+
+  header {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 3rem 0;
+    text-align: center;
+    border-bottom: 5px solid var(--accent-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  .business-button {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .business-button:hover {
+    background-color: #2471A3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  #interactive-tool {
+    background-color: #FFFFFF;
+    border: 2px solid var(--accent-color);
+    border-radius: 15px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  #game-container {
+    text-align: center;
+  }
+
+  #scenario-display {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    min-height: 100px;
+    font-weight: 600;
+    color: var(--primary-color);
+    padding: 1rem;
+    background-color: rgba(41, 128, 185, 0.1);
+    border-radius: 10px;
+  }
+
+  #options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .option-button {
+    flex: 1 1 200px;
+    max-width: 250px;
+  }
+
+  #feedback {
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: rgba(41, 128, 185, 0.1);
+  }
+
+  #score-display {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+  }
+
+  #company-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: var(--accent-color);
+  }
+
+  footer {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+    border-top: 5px solid var(--accent-color);
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    #company-stats {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="stock-ticker"></div>
+
+  <header>
+    <h1>BizMaster</h1>
+    <p>Master AS/A-Level Business Studies through Interactive Simulation</p>
+  </header>
+
+  <div class="container">
+    <h2>Business Decision Simulator</h2>
+    <p>Welcome to the Business Decision Simulator. As the CEO of a growing company, you'll face real-world business scenarios and make critical decisions. Your choices will impact your company's performance and your overall score. Are you ready to lead your company to success?</p>
+
+    <div id="interactive-tool">
+      <div id="game-container">
+        <div id="company-stats">
+          <div class="stat">
+            <div class="stat-label">Revenue</div>
+            $<span id="revenue" class="stat-value">1,000,000</span>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Profit</div>
+            $<span id="profit" class="stat-value">100,000</span>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Market Share</div>
+            <span id="market-share" class="stat-value">10</span>%
+          </div>
+          <div class="stat">
+            <div class="stat-label">Employee Satisfaction</div>
+            <span id="employee-satisfaction" class="stat-value">75</span>%
+          </div>
+        </div>
+        <div id="scenario-display"></div>
+        <div id="options-container"></div>
+        <div id="feedback"></div>
+        <div id="score-display">Score: 0</div>
+        <button class="business-button" onclick="nextScenario()">Next Decision</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 BizMaster. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function createStockTicker() {
+      const stockTicker = document.getElementById('stock-ticker');
+      const companies = ['APPL', 'GOOGL', 'MSFT', 'AMZN', 'FB', 'TSLA', 'NFLX', 'NVDA', 'PYPL', 'ADBE'];
+      let tickerContent = '';
+
+      companies.forEach(company => {
+        const change = (Math.random() * 10 - 5).toFixed(2);
+        const color = change >= 0 ? '#27AE60' : '#C0392B';
+        const arrow = change >= 0 ? '▲' : '▼';
+        tickerContent += `<span class="ticker-item" style="color: ${color}">${company} ${arrow} ${Math.abs(change)}%</span>`;
+      });
+
+      stockTicker.innerHTML = tickerContent;
+      
+      // Animate the ticker
+      let position = stockTicker.clientWidth;
+      const scrollSpeed = 0.5;
+      function scroll() {
+        position -= scrollSpeed;
+        stockTicker.style.transform = `translateX(${position}px)`;
+        if (position < -stockTicker.scrollWidth) {
+          position = stockTicker.clientWidth;
+        }
+        requestAnimationFrame(scroll);
+      }
+      scroll();
+    }
+
+    window.addEventListener('load', createStockTicker);
+
+    const scenarios = [
+      {
+        text: "Your company's main supplier has increased their prices by 15%. How do you respond?",
+        options: [
+          { text: "Raise your product prices to maintain profit margins", effect: { revenue: 50000, profit: 25000, marketShare: -2, employeeSatisfaction: 0 } },
+          { text: "Absorb the cost increase to maintain market share", effect: { revenue: 0, profit: -50000, marketShare: 1, employeeSatisfaction: 5 } },
+          { text: "Negotiate with the supplier for a better deal", effect: { revenue: 0, profit: 10000, marketShare: 0, employeeSatisfaction: 0 } },
+          { text: "Find a new, cheaper supplier", effect: { revenue: 0, profit: 30000, marketShare: 0, employeeSatisfaction: -5 } }
+        ]
+      },
+      {
+        text: "A competitor has launched a new product that threatens your market share. What's your strategy?",
+        options: [
+          { text: "Invest in R&D to improve your product", effect: { revenue: -30000, profit: -50000, marketShare: 3, employeeSatisfaction: 10 } },
+          { text: "Launch an aggressive marketing campaign", effect: { revenue: 100000, profit: 20000, marketShare: 2, employeeSatisfaction: 0 } },
+          { text: "Lower prices to stay competitive", effect: { revenue: 50000, profit: -25000, marketShare: 4, employeeSatisfaction: -5 } },
+          { text: "Focus on customer service to retain loyal customers", effect: { revenue: 0, profit: 10000, marketShare: 1, employeeSatisfaction: 15 } }
+        ]
+      },
+      {
+        text: "Employees are demanding a 10% salary increase. How do you handle this situation?",
+        options: [
+          { text: "Grant the full 10% increase", effect: { revenue: 0, profit: -75000, marketShare: 0, employeeSatisfaction: 20 } },
+          { text: "Offer a 5% increase with performance bonuses", effect: { revenue: 0, profit: -40000, marketShare: 1, employeeSatisfaction: 10 } },
+          { text: "Deny the increase but offer more benefits", effect: { revenue: 0, profit: -20000, marketShare: 0, employeeSatisfaction: 5 } },
+          { text: "Explain the company's financial situation and postpone any increases", effect: { revenue: 0, profit: 0, marketShare: -1, employeeSatisfaction: -15 } }
+        ]
+      }
+    ];
+
+    let currentScenario;
+    let score = 0;
+    let companyStats = {
+      revenue: 1000000,
+      profit: 100000,
+      marketShare: 10,
+      employeeSatisfaction: 75
+    };
+
+    function updateCompanyStats() {
+      document.getElementById('revenue').textContent = companyStats.revenue.toLocaleString();
+      document.getElementById('profit').textContent = companyStats.profit.toLocaleString();
+      document.getElementById('market-share').textContent = companyStats.marketShare;
+      document.getElementById('employee-satisfaction').textContent = companyStats.employeeSatisfaction;
+    }
+
+    function nextScenario() {
+      document.getElementById('feedback').textContent = '';
+      const scenarioDisplay = document.getElementById('scenario-display');
+      const optionsContainer = document.getElementById('options-container');
+
+      currentScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+      scenarioDisplay.textContent = currentScenario.text;
+
+      optionsContainer.innerHTML = '';
+      currentScenario.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.textContent = option.text;
+        button.className = 'business-button option-button';
+        button.onclick = () => makeDecision(index);
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function makeDecision(optionIndex) {
+      const feedback = document.getElementById('feedback');
+      const scoreDisplay = document.getElementById('score-display');
+      const option = currentScenario.options[optionIndex];
+
+      // Update company stats
+      companyStats.revenue += option.effect.revenue;
+      companyStats.profit += option.effect.profit;
+      companyStats.marketShare += option.effect.marketShare;
+      companyStats.employeeSatisfaction += option.effect.employeeSatisfaction;
+
+      // Ensure stats don't go below 0
+      companyStats.revenue = Math.max(0, companyStats.revenue);
+      companyStats.profit = Math.max(0, companyStats.profit);
+      companyStats.marketShare = Math.max(0, companyStats.marketShare);
+      companyStats.employeeSatisfaction = Math.max(0, Math.min(100, companyStats.employeeSatisfaction));
+
+      updateCompanyStats();
+
+      // Calculate score change
+      const scoreChange = (option.effect.revenue / 10000) + (option.effect.profit / 5000) + (option.effect.marketShare * 10) + (option.effect.employeeSatisfaction * 2);
+      score += Math.round(scoreChange);
+
+      feedback.textContent = `Decision made. Your company's performance has changed.`;
+      feedback.style.color = scoreChange >= 0 ? 'var(--success-color)' : 'var(--danger-color)';
+
+      scoreDisplay.textContent = `Score: ${score}`;
+      document.querySelectorAll('.option-button').forEach(btn => btn.disabled = true);
+    }
+
+    // Initialize the game
+    nextScenario();
+  </script>
+</body>
+</html>
